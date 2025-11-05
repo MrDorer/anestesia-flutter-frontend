@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "891529936701",
+    "project_id": "anestesia-mobile",
+    "storage_bucket": "anestesia-mobile.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:891529936701:android:9cca2c4b85119cc497cf54",
+        "android_client_info": {
+          "package_name": "com.example.anestesia"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-K8XiztOwZpmqMcOyTMcI446Js1NtfQU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

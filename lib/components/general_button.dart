@@ -8,16 +8,24 @@ class GeneralButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        margin: EdgeInsets.symmetric(horizontal: 25.0),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.secondary,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 25.0),
+      child: Material(
+        color: Theme.of(context).colorScheme.secondary,
+        borderRadius: BorderRadius.circular(8),
+        child: InkWell(
           borderRadius: BorderRadius.circular(8),
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            child: Center(
+              child: Text(
+                text,
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+            ),
+          ),
         ),
-        child: Center(child: Text(text)),
       ),
     );
   }
