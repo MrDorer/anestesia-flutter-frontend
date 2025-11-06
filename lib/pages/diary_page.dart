@@ -42,9 +42,11 @@ class _DiaryPageState extends State<DiaryPage> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        // Background image
         Positioned.fill(
-          child: Image.asset("images/diaryBg.png", fit: BoxFit.cover),
+          child: Image.asset(
+            "images/diaryBg.png",
+            fit: BoxFit.cover,
+          ), //De querer modificar solo los fondos, mover aqui
         ),
         Scaffold(
           backgroundColor: Colors.transparent,

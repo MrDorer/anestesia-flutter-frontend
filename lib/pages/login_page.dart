@@ -33,7 +33,10 @@ class LoginPage extends StatelessWidget {
         Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xFFDD60BE), Color(0xFF1E1E1E)],
+              colors: [
+                Color(0xFFDD60BE),
+                Color(0xFF1E1E1E),
+              ], //De querer modificar solo los fondos, mover aqui
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),

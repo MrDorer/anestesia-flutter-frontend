@@ -1,10 +1,10 @@
 import 'package:anestesia/auth/auth_service.dart';
 import 'package:anestesia/components/navigation_asset.dart';
+import 'package:anestesia/pages/bestiary_page.dart';
 import 'package:anestesia/pages/chatbot_page.dart';
 import 'package:anestesia/pages/diary_page.dart';
 import 'package:anestesia/pages/scoreboard_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -81,7 +81,7 @@ class HomePage extends StatelessWidget {
                   NavigationAsset(
                     title: 'Bestiario',
                     imgUrl: "images/bestiary.png",
-                    route: DiaryPage(),
+                    route: BestiaryPage(),
                   ),
                   NavigationAsset(
                     title: 'Tiempos de speedrun',

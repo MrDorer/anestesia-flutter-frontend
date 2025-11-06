@@ -64,19 +64,26 @@ class _ChatbotPageState extends State<ChatbotPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black87,
-      appBar: AppBar(
-        backgroundColor: Colors.white12,
-        centerTitle: true,
-        title: Text(
-          'He who must be forgotten',
-          style: TextStyle(color: Colors.grey.shade200),
+    return Stack(
+      children: [
+        Container(
+          color: Colors.black87,
+        ), //De querer modificar solo los fondos, mover aqui
+        Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            backgroundColor: Colors.white12,
+            centerTitle: true,
+            title: Text(
+              'He who must be forgotten',
+              style: TextStyle(color: Colors.grey.shade200),
+            ),
+          ),
+          body: Stack(
+            children: [_buildChat(), if (_isTyping) _buildTypingIndicator()],
+          ),
         ),
-      ),
-      body: Stack(
-        children: [_buildChat(), if (_isTyping) _buildTypingIndicator()],
-      ),
+      ],
     );
   }
 
