@@ -4,12 +4,14 @@ class GeneralTextfield extends StatelessWidget {
   final String hintText;
   final bool obscureText;
   final TextEditingController controller;
+  final Color? backgroundColor;
 
   const GeneralTextfield({
     super.key,
     required this.hintText,
     required this.obscureText,
     required this.controller,
+    this.backgroundColor,
   });
 
   @override
@@ -32,7 +34,8 @@ class GeneralTextfield extends StatelessWidget {
               color: Theme.of(context).colorScheme.primary,
             ),
           ),
-          fillColor: Theme.of(context).colorScheme.secondary,
+          // Use provided backgroundColor if given, otherwise fallback to theme
+          fillColor: backgroundColor ?? Theme.of(context).colorScheme.secondary,
           filled: true,
           hintText: hintText,
           hintStyle: TextStyle(

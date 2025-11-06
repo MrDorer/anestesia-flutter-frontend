@@ -1,4 +1,5 @@
 import 'package:anestesia/auth/auth_service.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:anestesia/components/general_button.dart';
 import 'package:anestesia/components/general_textfield.dart';
 import 'package:flutter/material.dart';
@@ -34,8 +35,9 @@ class LoginPage extends StatelessWidget {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Color(0xFFDD60BE),
-                Color(0xFF1E1E1E),
+                Color.fromARGB(255, 214, 137, 163),
+                Color.fromARGB(255, 143, 86, 105),
+               Color.fromARGB(255, 83, 43, 57),
               ], //De querer modificar solo los fondos, mover aqui
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
@@ -54,51 +56,68 @@ class LoginPage extends StatelessWidget {
                   height: 200,
                 ),
 
-                Text(
-                  'Iniciar sesión',
-                  style: TextStyle(color: Colors.white, fontSize: 25),
+   Text(
+                'Iniciar sesión',
+                style: GoogleFonts.overlock(
+                  color: Colors.white,
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
                 ),
-                SizedBox(height: 25),
+              ),
+
+              const SizedBox(height: 25),
 
                 GeneralTextfield(
                   hintText: "Correo",
                   obscureText: false,
                   controller: _emailController,
+                  backgroundColor: Colors.white.withOpacity(0.06),
                 ),
-                SizedBox(height: 25),
+              const SizedBox(height: 25),
 
                 GeneralTextfield(
                   hintText: "Contraseña",
                   obscureText: true,
                   controller: _pwController,
+                  backgroundColor: Colors.white.withOpacity(0.06),
                 ),
-                SizedBox(height: 25),
+              const SizedBox(height: 25),
 
-                GeneralButton(
-                  text: 'Iniciar sesión',
-                  onTap: () => login(context),
+              GeneralButton(
+                text: 'Iniciar sesión',
+                onTap: () => login(context),
+                // Use same gradient as the page background so the button "agarra"
+                // los colores del bg.
+                gradient: LinearGradient(
+                  colors: [
+                    Color.fromARGB(255, 214, 137, 163),
+                    Color.fromARGB(255, 143, 86, 105),
+                    Color.fromARGB(255, 83, 43, 57),
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
                 ),
-                SizedBox(height: 25),
+              ),
+              const SizedBox(height: 25),
 
-                SizedBox(height: 25),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Aun no estas registrado?',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.tertiary,
-                        fontSize: 15,
-                      ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '¿Aún no estás registrado?',
+                    style: GoogleFonts.overlock(
+                      color: Theme.of(context).colorScheme.tertiary,
+                      fontSize: 15,
                     ),
-                    GestureDetector(
-                      onTap: onTap,
+                  ),
+                  GestureDetector(
+                    onTap: onTap,
                       child: Text(
-                        ' Registrate aqui',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.deepPurple,
-                          fontSize: 15,
+                      ' Regístrate aquí',
+                      style: GoogleFonts.overlock(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.deepPurpleAccent,
+                        fontSize: 15,
                         ),
                       ),
                     ),

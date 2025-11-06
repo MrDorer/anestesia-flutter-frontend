@@ -42,7 +42,7 @@ class RegisterPage extends StatelessWidget {
         Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xFFDD60BE), Color(0xFF1E1E1E)],
+              colors: [Color.fromARGB(255, 94, 41, 66), Color(0xFF1E1E1E)],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
@@ -61,7 +61,7 @@ class RegisterPage extends StatelessWidget {
                 ),
 
                 Text(
-                  'Be careful for what you wish for',
+                  'What you forget, the subconscious remembers',
                   style: TextStyle(color: Colors.white, fontSize: 25),
                 ),
                 SizedBox(height: 25),

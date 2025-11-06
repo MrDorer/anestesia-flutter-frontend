@@ -44,12 +44,12 @@ class _DiaryPageState extends State<DiaryPage> {
       children: [
         Positioned.fill(
           child: Image.asset(
-            "images/diaryBg.png",
+            'images/homeback.jpg',
             fit: BoxFit.cover,
           ), //De querer modificar solo los fondos, mover aqui
         ),
         Scaffold(
-          backgroundColor: Colors.transparent,
+          backgroundColor: const Color.fromARGB(88, 83, 75, 75),
           appBar: AppBar(backgroundColor: Colors.transparent),
           body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>?>(
             future: _getPage(pageNumber),
