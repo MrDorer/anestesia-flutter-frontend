@@ -46,6 +46,7 @@ dependencies:
   firebase_messaging: ^16.0.4
   flutter_local_notifications: ^19.5.0
   google_fonts: ^6.3.2
+  video_player: ^2.5.1
 
 dev_dependencies:
   flutter_test:
@@ -86,6 +87,7 @@ flutter:
     - images/homeback.jpg
     - images/diaryyy.png
     - images/AntiChrist.jpg
+    - images/antigif.mp4
 
   # To add assets to your application, add an assets section, like this:
   # assets:

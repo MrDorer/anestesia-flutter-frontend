@@ -5,9 +5,16 @@ import 'package:anestesia/pages/diary_page.dart';
 import 'package:anestesia/pages/scoreboard_page.dart';
 import 'package:anestesia/pages/album_page.dart';
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
@@ -88,11 +95,12 @@ class HomePage extends StatelessWidget {
                       _NavigationAsset(
                         title: 'Anticristo',
                         imgUrl: 'images/AntiChrist.jpg',
+                        videoAsset: 'images/antigif.mp4',
                         route: ChatbotPage(),
                         isMain: true,
                       ),
 
-                      const SizedBox(height: 30),
+                      const SizedBox(height: 12),
 
                       // 🔹 RESTO DE OPCIONES - EN FILA (responsive via Wrap)
                       Wrap(
@@ -136,59 +144,147 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class _NavigationAsset extends StatelessWidget {
+class _NavigationAsset extends StatefulWidget {
   final String title;
   final String imgUrl;
+  final String? videoAsset;
   final Widget route;
   final bool isMain;
 
   const _NavigationAsset({
-    super.key,
+    Key? key,
     required this.title,
     required this.imgUrl,
+    this.videoAsset,
     required this.route,
     this.isMain = false,
-  });
+  }) : super(key: key);
+
+  @override
+  State<_NavigationAsset> createState() => _NavigationAssetState();
+}
+
+class _NavigationAssetState extends State<_NavigationAsset> {
+  VideoPlayerController? _vController;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.isMain && widget.videoAsset != null && widget.videoAsset!.isNotEmpty) {
+      _vController = VideoPlayerController.asset(widget.videoAsset!);
+      _vController!.initialize().then((_) {
+        _vController!..setLooping(true)..play();
+        setState(() {});
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _vController?.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final isMain = widget.isMain;
+    final title = widget.title;
+    final imgUrl = widget.imgUrl;
+
     return GestureDetector(
-      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => route)),
-      child: Container(
-  margin: const EdgeInsets.symmetric(vertical: 10),
-  width: isMain ? 220 : 120,
-  height: isMain ? 220 : 120,
+      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => widget.route)),
+  child: Container(
+  margin: EdgeInsets.symmetric(vertical: isMain ? 8 : 6),
+        width: isMain ? 300 : 120,
+        height: isMain ? 300 : 120,
         decoration: BoxDecoration(
           shape: isMain ? BoxShape.circle : BoxShape.rectangle,
           borderRadius: isMain ? null : BorderRadius.circular(20),
-          image: DecorationImage(
-            image: AssetImage(imgUrl),
-            fit: BoxFit.cover,
-          ),
           boxShadow: [
             BoxShadow(
-              color: Colors.pinkAccent.withOpacity(0.5),
-              blurRadius: 10,
-              spreadRadius: 2,
+              color: Colors.pinkAccent.withOpacity(0.55),
+              blurRadius: 16,
+              spreadRadius: 4,
             ),
           ],
         ),
-        child: Center(
-          child: Text(
-            title,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-              shadows: [
-                Shadow(
-                  color: Colors.black,
-                  blurRadius: 8,
+        child: isMain
+            ? ClipOval(
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    if (_vController != null && _vController!.value.isInitialized)
+                      FittedBox(
+                        fit: BoxFit.cover,
+                        child: SizedBox(
+                          width: _vController!.value.size.width,
+                          height: _vController!.value.size.height,
+                          child: VideoPlayer(_vController!),
+                        ),
+                      )
+                    else
+                      (imgUrl.isNotEmpty
+                          ? Image.asset(imgUrl, fit: BoxFit.cover)
+                          : Container(
+                              color: Colors.black26,
+                              child: const Center(
+                                child: Icon(Icons.image_not_supported, color: Colors.white70, size: 36),
+                              ),
+                            )),
+
+                    Center(
+                      child: Text(
+                        title,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black,
+                              blurRadius: 8,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-        ),
+              )
+            : ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    imgUrl.isNotEmpty
+                        ? Image.asset(imgUrl, fit: BoxFit.cover)
+                        : Container(
+                            color: Colors.black26,
+                            child: const Center(
+                              child: Icon(Icons.image_not_supported, color: Colors.white70, size: 36),
+                            ),
+                          ),
+                    Center(
+                      child: Text(
+                        title,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black,
+                              blurRadius: 8,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
       ),
     );
   }
