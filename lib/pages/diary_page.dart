@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:anestesia/components/typewriter_text.dart';
 
 class DiaryPage extends StatefulWidget {
   const DiaryPage({super.key});
@@ -44,9 +45,9 @@ class _DiaryPageState extends State<DiaryPage> {
       children: [
         Positioned.fill(
           child: Image.asset(
-            'images/homeback.jpg',
+            'images/2.jpg',
             fit: BoxFit.cover,
-          ), //De querer modificar solo los fondos, mover aqui
+          ), // diary page background
         ),
         Scaffold(
           backgroundColor: const Color.fromARGB(88, 83, 75, 75),
@@ -61,10 +62,10 @@ class _DiaryPageState extends State<DiaryPage> {
               }
 
               if (!snapshot.hasData || snapshot.data == null) {
-                return const Center(
+                return Center(
                   child: Text(
                     "No se encontró esta página",
-                    style: TextStyle(fontSize: 22, color: Colors.black),
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 22, color: Colors.black),
                   ),
                 );
               }
@@ -86,21 +87,23 @@ class _DiaryPageState extends State<DiaryPage> {
                       alignment: Alignment.centerLeft,
                       child: Text(
                         "“$title”",
-                        style: const TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                            ),
                       ),
                     ),
                     const SizedBox(height: 15),
                     Align(
                       alignment: Alignment.centerRight,
-                      child: Text(date, style: const TextStyle(fontSize: 23)),
+                      child: Text(date, style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 23)),
                     ),
                     const SizedBox(height: 15),
-                    Text(
-                      body,
-                      style: const TextStyle(fontSize: 24, fontFamily: "Nanum"),
+                    TypewriterText(
+                      text: body,
+                      textStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 24),
+                      durationPerChar: const Duration(milliseconds: 20),
+                      cursor: '▌',
                     ),
                   ],
                 ),
@@ -122,7 +125,7 @@ class _DiaryPageState extends State<DiaryPage> {
                   ),
                   Text(
                     "$pageNumber / 4",
-                    style: const TextStyle(color: Colors.black, fontSize: 30),
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(color: Colors.black, fontSize: 30),
                   ),
                   IconButton(
                     icon: const Icon(Icons.arrow_circle_right),

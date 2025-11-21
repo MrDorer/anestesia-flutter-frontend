@@ -45,11 +45,11 @@ class NavigationAsset extends StatelessWidget {
               alignment: Alignment.center,
               child: Text(
                 title,
-                style: const TextStyle(
-                  color: Colors.white70,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: Colors.white70,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
             ),
           ),

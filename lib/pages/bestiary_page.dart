@@ -39,7 +39,7 @@ class _BestiaryPageState extends State<BestiaryPage> {
     final title = data['title'] ?? 'Sin título';
     final area = data['area'] ?? 'Sin área';
     final body = data['body'] ?? 'Sin contenido';
-    final img = data['image'] as String?;
+  final img = data['url'] as String?;
 
     Navigator.push(
       context,
@@ -53,7 +53,7 @@ class _BestiaryPageState extends State<BestiaryPage> {
           backgroundColor: Colors.transparent,
           body: SingleChildScrollView(
             padding: const EdgeInsets.all(16),
-            child: Column(
+                child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 SizedBox(
@@ -64,17 +64,18 @@ class _BestiaryPageState extends State<BestiaryPage> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                Text(title,
-                    style: const TextStyle(
+                Text(
+                  title,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontSize: 26,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white70)),
+                        color: Colors.white70,
+                      ),
+                ),
                 const SizedBox(height: 8),
-                Text(area, style: const TextStyle(color: Colors.white70)),
+                Text(area, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white70)),
                 const SizedBox(height: 16),
-                Text(body,
-                    style: const TextStyle(
-                        fontSize: 18, color: Colors.white70)),
+                Text(body, style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontSize: 18, color: Colors.white70)),
               ],
             ),
           ),
@@ -112,10 +113,10 @@ class _BestiaryPageState extends State<BestiaryPage> {
               }
 
               if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Center(
+                return Center(
                   child: Text(
                     'No se encontraron enemigos',
-                    style: TextStyle(fontSize: 22, color: Colors.white70),
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 22, color: Colors.white70),
                   ),
                 );
               }
@@ -136,7 +137,7 @@ class _BestiaryPageState extends State<BestiaryPage> {
                     final data = beasts[index].data()!;
                     final title = data['title'] ?? '';
                     final area = data['area'] ?? '';
-                    final img = data['image'] as String?;
+                    final img = data['url'] as String?;
 
                     return GestureDetector(
                       onTap: () => _openDetail(context, data),
@@ -160,15 +161,19 @@ class _BestiaryPageState extends State<BestiaryPage> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(title,
-                                      style: const TextStyle(
+                                  Text(
+                                    title,
+                                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold,
-                                          color: Colors.white70)),
+                                          color: Colors.white70,
+                                        ),
+                                  ),
                                   const SizedBox(height: 4),
-                                  Text(area,
-                                      style: const TextStyle(
-                                          fontSize: 14, color: Colors.white60)),
+                                  Text(
+                                    area,
+                                    style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 14, color: Colors.white60),
+                                  ),
                                 ],
                               ),
                             ),

@@ -15,6 +15,19 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late PageController _smallController;
+
+  @override
+  void initState() {
+    super.initState();
+  _smallController = PageController(viewportFraction: 0.42);
+  }
+
+  @override
+  void dispose() {
+    _smallController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,12 +95,12 @@ class _HomePageState extends State<HomePage> {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
                         alignment: Alignment.centerLeft,
-                        child: const Text(
+                        child: Text(
                           '¿Qué te trae aquí hoy?',
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 49, 16, 34),
-                            fontSize: 24,
-                          ),
+                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                color: const Color.fromARGB(255, 49, 16, 34),
+                                fontSize: 24,
+                              ),
                         ),
                       ),
 
@@ -100,35 +113,82 @@ class _HomePageState extends State<HomePage> {
                         isMain: true,
                       ),
 
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 32),
 
-                      // 🔹 RESTO DE OPCIONES - EN FILA (responsive via Wrap)
-                      Wrap(
-                        alignment: WrapAlignment.center,
-                        spacing: 20,
-                        runSpacing: 20,
-                        children: [
-                          _NavigationAsset(
-                            title: 'Diario de Anneth',
-                            imgUrl: '',
-                            route: DiaryPage(),
-                          ),
-                          _NavigationAsset(
-                            title: 'Bestiario',
-                            imgUrl: '',
-                            route: BestiaryPage(),
-                          ),
-                          _NavigationAsset(
-                            title: 'Scoreboard',
-                            imgUrl: '',
-                            route: ScoreboardPage(),
-                          ),
-                          _NavigationAsset(
-                            title: 'Album',
-                            imgUrl: '',
-                            route: AlbumPage(),
-                          ),
-                        ],
+                      // 🔹 RESTO DE OPCIONES - CAROUSEL HORIZONTAL
+                      SizedBox(
+                        height: 160,
+                        child: PageView.builder(
+                          controller: _smallController,
+                          itemCount: 4,
+                          padEnds: false,
+                          itemBuilder: (context, index) {
+                            final items = [
+                              {
+                                'title': 'Diario de Anneth',
+                                  'img': 'images/closed-holy-bible-xdajkbifj68n6fo1.png',
+                                'route': DiaryPage(),
+                              },
+                              {
+                                'title': 'Bestiario',
+                                'img': 'images/bear.png',
+                                'route': BestiaryPage(),
+                              },
+                               {
+                                 'title': 'Scoreboard',
+                                 'img': 'images/rank.png',
+                                 'route': ScoreboardPage(),
+                               },
+                              {
+                                'title': 'Album',
+                                'img': 'images/album.png',
+                                'route': AlbumPage(),
+                              },
+                            ];
+
+                            final item = items[index];
+
+                            return AnimatedBuilder(
+                              animation: _smallController,
+                              builder: (context, child) {
+                                double value = 0;
+                                if (_smallController.hasClients && _smallController.position.haveDimensions) {
+                                  value = _smallController.page! - index;
+                                } else {
+                                  value = (_smallController.initialPage - index).toDouble();
+                                }
+                                final rotation = (value * 0.25).clamp(-0.5, 0.5);
+
+                                return Transform.rotate(
+                                  angle: rotation,
+                                  child: child,
+                                );
+                              },
+                              child: GestureDetector(
+                                onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => item['route'] as Widget)),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Image.asset(
+                                      item['img'] as String,
+                                      width: 150,
+                                      height: 120,
+                                      fit: BoxFit.contain,
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(
+                                      item['title'] as String,
+                                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                            color: const Color.fromARGB(255, 70, 13, 42),
+                                            fontSize: 14,
+                                          ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       ),
 
                       const SizedBox(height: 170),
@@ -236,54 +296,48 @@ class _NavigationAssetState extends State<_NavigationAsset> {
                       child: Text(
                         title,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          shadows: [
-                            Shadow(
-                              color: Colors.black,
-                              blurRadius: 8,
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              shadows: const [
+                                Shadow(
+                                  color: Colors.black,
+                                  blurRadius: 8,
+                                ),
+                              ],
+                            ) ?? TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              shadows: [
+                                Shadow(
+                                  color: Colors.black,
+                                  blurRadius: 8,
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
                       ),
                     ),
                   ],
                 ),
               )
-            : ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    imgUrl.isNotEmpty
-                        ? Image.asset(imgUrl, fit: BoxFit.cover)
-                        : Container(
-                            color: Colors.black26,
-                            child: const Center(
-                              child: Icon(Icons.image_not_supported, color: Colors.white70, size: 36),
-                            ),
-                          ),
-                    Center(
-                      child: Text(
-                        title,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          shadows: [
-                            Shadow(
-                              color: Colors.black,
-                              blurRadius: 8,
-                            ),
-                          ],
+            : Center(
+                child: imgUrl.isNotEmpty
+                    ? Image.asset(
+                        imgUrl,
+                        fit: BoxFit.contain,
+                        width: isMain ? 300 : 120,
+                        height: isMain ? 300 : 120,
+                      )
+                    : Container(
+                        width: isMain ? 300 : 120,
+                        height: isMain ? 300 : 120,
+                        color: Colors.black26,
+                        child: const Center(
+                          child: Icon(Icons.image_not_supported, color: Colors.white70, size: 36),
                         ),
                       ),
-                    ),
-                  ],
-                ),
               ),
       ),
     );

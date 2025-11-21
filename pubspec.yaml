@@ -80,14 +80,24 @@ flutter:
   assets:
     - images/diaryBg.png
     - images/anestesiaLogo.png
+    - images/paper.png
     - images/bestiary.png
+    - images/bear.png
     - images/him.png
+    - images/rank.png
     - images/speedrun.png
+    - images/album.png
     - images/diaryPage.png
     - images/homeback.jpg
     - images/diaryyy.png
     - images/AntiChrist.jpg
     - images/antigif.mp4
+    - images/login.mp4
+    - images/chatBack.jpg
+    - images/1.jpg
+    - images/2.jpg
+    - images/3.jpg
+    - images/closed-holy-bible-xdajkbifj68n6fo1.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
