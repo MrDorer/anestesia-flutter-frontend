@@ -18,6 +18,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _pwController = TextEditingController();
   late VideoPlayerController _vController;
   bool _videoInitialized = false;
+  bool _obscurePassword = true;
 
   @override
   void initState() {
@@ -113,10 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: Stack(
                         children: [
                           // space reserved for card background (video is shown behind entire page)
-                          Container(
-                            height: 300,
-                            color: Colors.transparent,
-                          ),
+                          Container(height: 300, color: Colors.transparent),
 
                           // translucent overlay to increase contrast
                           Container(
@@ -126,7 +124,10 @@ class _LoginPageState extends State<LoginPage> {
 
                           // inputs and button
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 18.0),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0,
+                              vertical: 18.0,
+                            ),
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
@@ -134,15 +135,31 @@ class _LoginPageState extends State<LoginPage> {
                                   hintText: "Correo",
                                   obscureText: false,
                                   controller: _emailController,
-                                  backgroundColor: Colors.white.withOpacity(0.06),
+                                  backgroundColor: Colors.white.withOpacity(
+                                    0.06,
+                                  ),
                                 ),
                                 const SizedBox(height: 16),
                                 GeneralTextfield(
                                   hintText: "Contraseña",
-                                  obscureText: true,
+                                  obscureText: _obscurePassword,
                                   controller: _pwController,
-                                  backgroundColor: Colors.white.withOpacity(0.06),
+                                  backgroundColor: Colors.white.withOpacity(
+                                    0.06,
+                                  ),
+                                  suffixIcon: GestureDetector(
+                                    onTap: () => setState(() {
+                                      _obscurePassword = !_obscurePassword;
+                                    }),
+                                    child: Icon(
+                                      _obscurePassword
+                                          ? Icons.visibility_off
+                                          : Icons.visibility,
+                                      color: Colors.white.withOpacity(0.8),
+                                    ),
+                                  ),
                                 ),
+
                                 const SizedBox(height: 18),
                                 GeneralButton(
                                   text: 'Iniciar sesión',
@@ -164,8 +181,10 @@ class _LoginPageState extends State<LoginPage> {
                                     Text(
                                       '¿Aún no estás registrado?',
                                       style: GoogleFonts.overlock(
-                                        color: Theme.of(context).colorScheme.tertiary,
-                                        fontSize: 15,
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.tertiary,
+                                        fontSize: 18,
                                       ),
                                     ),
                                     GestureDetector(
@@ -174,8 +193,8 @@ class _LoginPageState extends State<LoginPage> {
                                         ' Regístrate aquí',
                                         style: GoogleFonts.overlock(
                                           fontWeight: FontWeight.bold,
-                                          color: Colors.deepPurpleAccent,
-                                          fontSize: 15,
+                                          color: Colors.pink,
+                                          fontSize: 18,
                                         ),
                                       ),
                                     ),

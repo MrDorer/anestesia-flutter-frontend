@@ -5,6 +5,7 @@ class GeneralTextfield extends StatelessWidget {
   final bool obscureText;
   final TextEditingController controller;
   final Color? backgroundColor;
+  final Widget? suffixIcon;
 
   const GeneralTextfield({
     super.key,
@@ -12,6 +13,7 @@ class GeneralTextfield extends StatelessWidget {
     required this.obscureText,
     required this.controller,
     this.backgroundColor,
+    this.suffixIcon,
   });
 
   @override
@@ -37,6 +39,7 @@ class GeneralTextfield extends StatelessWidget {
           // Use provided backgroundColor if given, otherwise fallback to theme
           fillColor: backgroundColor ?? Theme.of(context).colorScheme.secondary,
           filled: true,
+          suffixIcon: suffixIcon,
           hintText: hintText,
           hintStyle: TextStyle(
             color: Theme.of(context).colorScheme.tertiary,
