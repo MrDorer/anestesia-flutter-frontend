@@ -5,6 +5,8 @@ import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class ChatbotPage extends StatefulWidget {
   const ChatbotPage({super.key});
@@ -223,7 +225,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
     );
   }
 
-  void _sendMessage(ChatMessage chatMessage) {
+  void _sendMessage(ChatMessage chatMessage) async {
     setState(() {
       messages = [chatMessage, ...messages];
       _isTyping = true;
@@ -231,18 +233,7 @@ class _ChatbotPageState extends State<ChatbotPage> {
 
     _saveMessage(chatMessage);
 
-    final contextHistory = messages
-        .take(10)
-        .map((m) => "${m.user.firstName}: ${m.text}")
-        .join("\n");
-
-    final prompt =
-        """
-      Tema: Toda la conversación se centra en el videojuego de terror psicológico "Anestesia".
-      Eres Samael...
-      User: ${chatMessage.text}
-    """;
-
+    // Create bot message placeholder
     ChatMessage botMessage = ChatMessage(
       user: bot,
       createdAt: DateTime.now(),
@@ -253,45 +244,37 @@ class _ChatbotPageState extends State<ChatbotPage> {
       messages = [botMessage, ...messages];
     });
 
-    String buffer = "";
+    try {
+      final response = await http.post(
+        Uri.parse("http://104.236.125.178/api/api/query"),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({"query": chatMessage.text}),
+      );
 
-    gemini
-        .promptStream(parts: [Part.text(prompt)])
-        .listen(
-          (value) {
-            final output = value?.output;
-            if (output == null || output.isEmpty) return;
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final botText = data['response'] ?? "No response";
 
-            buffer += output;
-            botMessage.text = buffer;
+        botMessage.text = botText;
 
-            setState(() {
-              messages = [
-                botMessage,
-                ...messages.where((m) => m != botMessage),
-              ];
-            });
-          },
-          onDone: () async {
-            botMessage.text = buffer;
-            setState(() {
-              _isTyping = false;
-              messages = [
-                botMessage,
-                ...messages.where((m) => m != botMessage),
-              ];
-            });
+        setState(() {
+          messages = [botMessage, ...messages.where((m) => m != botMessage)];
+          _isTyping = false;
+        });
 
-            if (buffer.isNotEmpty) {
-              await _saveMessage(botMessage);
-            }
-          },
-          onError: (error) {
-            setState(() {
-              _isTyping = false;
-            });
-          },
-        );
+        if (botText.isNotEmpty) {
+          await _saveMessage(botMessage);
+        }
+      } else {
+        throw Exception("API error: ${response.statusCode}");
+      }
+    } catch (e) {
+      setState(() {
+        botMessage.text = "Error getting response";
+        messages = [botMessage, ...messages.where((m) => m != botMessage)];
+        _isTyping = false;
+      });
+    }
   }
 
   Future<void> _saveMessage(ChatMessage message) async {

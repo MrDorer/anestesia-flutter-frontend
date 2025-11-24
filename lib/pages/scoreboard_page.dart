@@ -16,12 +16,7 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Positioned.fill(
-          child: Image.asset(
-            'images/3.jpg',
-            fit: BoxFit.cover,
-          ),
-        ),
+        Positioned.fill(child: Image.asset('images/3.jpg', fit: BoxFit.cover)),
 
         Scaffold(
           appBar: AppBar(backgroundColor: Colors.transparent),
@@ -36,12 +31,12 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
                   Text(
                     "Ranking por tiempo",
                     style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                          fontSize: 35,
-                          color: Colors.white,
-                          shadows: [
-                            const Shadow(color: Colors.black54, blurRadius: 6),
-                          ],
-                        ),
+                      fontSize: 35,
+                      color: Colors.white,
+                      shadows: [
+                        const Shadow(color: Colors.black54, blurRadius: 6),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: 12),
 
@@ -58,7 +53,8 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
                             value: category,
                             child: Text(
                               category,
-                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white),
+                              style: Theme.of(context).textTheme.bodyMedium
+                                  ?.copyWith(color: Colors.white),
                             ),
                           );
                         }).toList(),
@@ -82,15 +78,19 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
                           .limit(50)
                           .snapshots(),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const Center(child: CircularProgressIndicator());
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
                         }
 
                         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                           return Center(
                             child: Text(
                               "No hay registros aún",
-                              style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white),
+                              style: Theme.of(context).textTheme.bodyLarge
+                                  ?.copyWith(color: Colors.white),
                             ),
                           );
                         }
@@ -103,8 +103,19 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
                         final players = docs.length.toString();
                         double avg = 0;
                         try {
-                          final times = docs.map((d) => (d.data() as Map<String, dynamic>)['time'] as num).toList();
-                          avg = times.fold<double>(0, (p, e) => p + e.toDouble()) / times.length;
+                          final times = docs
+                              .map(
+                                (d) =>
+                                    (d.data() as Map<String, dynamic>)['time']
+                                        as num,
+                              )
+                              .toList();
+                          avg =
+                              times.fold<double>(
+                                0,
+                                (p, e) => p + e.toDouble(),
+                              ) /
+                              times.length;
                         } catch (_) {}
 
                         return Column(
@@ -114,11 +125,26 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                _statCard(context, 'Mejor', bestTime, Icons.emoji_events),
-                                const SizedBox(width: 12),
-                                _statCard(context, 'Jugadores', players, Icons.people),
-                                const SizedBox(width: 12),
-                                _statCard(context, 'Promedio', avg.isNaN ? '--:--' : avg.toStringAsFixed(1), Icons.speed),
+                                _statCard(
+                                  context,
+                                  'Mejor',
+                                  bestTime,
+                                  Icons.emoji_events,
+                                ),
+                                const SizedBox(width: 11),
+                                _statCard(
+                                  context,
+                                  'Jugadores',
+                                  players,
+                                  Icons.people,
+                                ),
+                                const SizedBox(width: 11),
+                                _statCard(
+                                  context,
+                                  'Promedio',
+                                  avg.isNaN ? '--:--' : avg.toStringAsFixed(1),
+                                  Icons.speed,
+                                ),
                               ],
                             ),
                             const SizedBox(height: 12),
@@ -128,10 +154,19 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
                               child: ListView.separated(
                                 scrollDirection: Axis.horizontal,
                                 itemCount: docs.length >= 5 ? 5 : docs.length,
-                                separatorBuilder: (_, __) => const SizedBox(width: 12),
+                                separatorBuilder: (_, __) =>
+                                    const SizedBox(width: 12),
                                 itemBuilder: (context, index) {
-                                  final data = docs[index].data() as Map<String, dynamic>;
-                                  return _topCard(context, index + 1, data['player'] ?? 'Anon', data['time']?.toString() ?? '--:--', data['progress']?.toString() ?? '');
+                                  final data =
+                                      docs[index].data()
+                                          as Map<String, dynamic>;
+                                  return _topCard(
+                                    context,
+                                    index + 1,
+                                    data['player'] ?? 'Anon',
+                                    data['time']?.toString() ?? '--:--',
+                                    data['progress']?.toString() ?? '',
+                                  );
                                 },
                               ),
                             ),
@@ -148,17 +183,44 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
                                 ),
                                 child: ListView.separated(
                                   itemCount: docs.length,
-                                  separatorBuilder: (_, __) => const Divider(color: Colors.white24),
+                                  separatorBuilder: (_, __) =>
+                                      const Divider(color: Colors.white24),
                                   itemBuilder: (context, idx) {
-                                    final data = docs[idx].data() as Map<String, dynamic>;
+                                    final data =
+                                        docs[idx].data()
+                                            as Map<String, dynamic>;
                                     return ListTile(
                                       leading: CircleAvatar(
-                                        backgroundColor: Colors.pink.shade200.withOpacity(0.2),
-                                        child: Text((idx + 1).toString(), style: const TextStyle(color: Colors.white)),
+                                        backgroundColor: Colors.pink.shade200
+                                            .withOpacity(0.2),
+                                        child: Text(
+                                          (idx + 1).toString(),
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                          ),
+                                        ),
                                       ),
-                                      title: Text(data['player'] ?? 'Anon', style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.white)),
-                                      subtitle: Text('Progreso: ${data['progress'] ?? '-'}', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white70)),
-                                      trailing: Text(data['time']?.toString() ?? '--:--', style: Theme.of(context).textTheme.titleSmall?.copyWith(color: Colors.white)),
+                                      title: Text(
+                                        data['player'] ?? 'Anon',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge
+                                            ?.copyWith(color: Colors.white),
+                                      ),
+                                      subtitle: Text(
+                                        'Progreso: ${data['progress'] ?? '-'}',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall
+                                            ?.copyWith(color: Colors.white70),
+                                      ),
+                                      trailing: Text(
+                                        data['time']?.toString() ?? '--:--',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleSmall
+                                            ?.copyWith(color: Colors.white),
+                                      ),
                                     );
                                   },
                                 ),
@@ -178,7 +240,12 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
     );
   }
 
-  Widget _statCard(BuildContext context, String label, String value, IconData icon) {
+  Widget _statCard(
+    BuildContext context,
+    String label,
+    String value,
+    IconData icon,
+  ) {
     return Container(
       width: 120,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
@@ -192,20 +259,42 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
         children: [
           Icon(icon, color: Colors.pink.shade100),
           const SizedBox(height: 8),
-          Text(value, style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white, fontWeight: FontWeight.bold)),
+          Text(
+            value,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           const SizedBox(height: 4),
-          Text(label, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white70)),
+          Text(
+            label,
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: Colors.white70),
+          ),
         ],
       ),
     );
   }
 
-  Widget _topCard(BuildContext context, int rank, String player, String time, String progress) {
+  Widget _topCard(
+    BuildContext context,
+    int rank,
+    String player,
+    String time,
+    String progress,
+  ) {
     return Container(
       width: 200,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        gradient: LinearGradient(colors: [Colors.black.withOpacity(0.6), Colors.black.withOpacity(0.35)]),
+        gradient: LinearGradient(
+          colors: [
+            Colors.black.withOpacity(0.6),
+            Colors.black.withOpacity(0.35),
+          ],
+        ),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Colors.white12),
       ),
@@ -214,15 +303,38 @@ class _ScoreboardPageState extends State<ScoreboardPage> {
         children: [
           Row(
             children: [
-              CircleAvatar(backgroundColor: Colors.pink.shade200.withOpacity(0.25), child: Text(rank.toString(), style: const TextStyle(color: Colors.white))),
+              CircleAvatar(
+                backgroundColor: Colors.pink.shade200.withOpacity(0.25),
+                child: Text(
+                  rank.toString(),
+                  style: const TextStyle(color: Colors.white),
+                ),
+              ),
               const SizedBox(width: 10),
-              Expanded(child: Text(player, style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Colors.white))),
+              Expanded(
+                child: Text(
+                  player,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleMedium?.copyWith(color: Colors.white),
+                ),
+              ),
             ],
           ),
           const Spacer(),
-          Text('Tiempo: $time', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white70)),
+          Text(
+            'Tiempo: $time',
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: Colors.white70),
+          ),
           const SizedBox(height: 6),
-          Text('Avance: $progress', style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Colors.white70)),
+          Text(
+            'Avance: $progress',
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: Colors.white70),
+          ),
         ],
       ),
     );
